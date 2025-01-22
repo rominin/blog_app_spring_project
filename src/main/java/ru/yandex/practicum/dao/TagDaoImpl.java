@@ -3,11 +3,12 @@ package ru.yandex.practicum.dao;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.model.Tag;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.PreparedStatement;
 import java.util.List;
 
 @Repository
@@ -47,9 +48,17 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public void save(Tag tag) {
+    public Long save(Tag tag) {
         String sql = "INSERT INTO tags (name) VALUES (?)";
-        jdbcTemplate.update(sql, tag.getName());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"ID"});
+            ps.setString(1, tag.getName());
+            return ps;
+        }, keyHolder);
+
+        return keyHolder.getKey().longValue();
     }
 
     @Override

@@ -18,10 +18,8 @@
   <input type="text" id="imageUrl" name="imageUrl" th:value="${post.imageUrl}" />
   <label for="text">Text:</label>
   <textarea id="text" name="text" required th:text="${post.text}"></textarea>
-  <label for="tags">Tags:</label>
-  <select id="tags" name="tags" multiple>
-    <option th:each="tag : ${tags}" th:value="${tag.name}" th:text="${tag.name}"></option>
-  </select>
+  <label for="tags">Tags (comma-separated):</label>
+  <input type="text" id="tags" name="tags" placeholder="e.g., Tag1, Tag2, Tag99" />
 
   <button type="submit">Add Post</button>
 </form>

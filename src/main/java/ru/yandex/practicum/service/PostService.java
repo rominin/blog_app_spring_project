@@ -38,7 +38,8 @@ public class PostService {
             if (tag == null) {
                 tag = new Tag();
                 tag.setName(tagName);
-                tagDao.save(tag);
+                Long tagId = tagDao.save(tag);
+                tag.setId(tagId);
             }
             postDao.addTagToPost(postId, tag.getId());
         }

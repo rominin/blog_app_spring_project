@@ -7,7 +7,9 @@ import ru.yandex.practicum.model.Post;
 import ru.yandex.practicum.service.PostService;
 import ru.yandex.practicum.service.TagService;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/post")
@@ -29,8 +31,13 @@ public class PostController {
     }
 
     @PostMapping("/new")
-    public String addPost(@ModelAttribute Post post, @RequestParam (name = "tags") List<String> tags) {
-        postService.addPost(post, tags);
+    public String addPost(@ModelAttribute Post post, @RequestParam (name = "tags") String tags) {
+        List<String> tagNames = Arrays.stream(tags.split(","))
+                .map(String::trim)
+                .filter(name -> !name.isEmpty())
+                .collect(Collectors.toList());
+
+        postService.addPost(post, tagNames);
         return "redirect:/feed";
     }
 
