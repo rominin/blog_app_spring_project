@@ -11,4 +11,5 @@ public interface PostDao {
     void update(Post post);
     void delete(Long id);
     List<Post> findPostsByTag(Long tagId);
+    List<Post> findPostsByTag(Long tagId, int page, int size);
 }

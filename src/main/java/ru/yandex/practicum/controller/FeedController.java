@@ -24,8 +24,18 @@ public class FeedController {
     public String feed(
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "tag", required = false) String tag,
             Model model) {
-        List<Post> posts = postService.getPosts(page, size);
+
+        List<Post> posts;
+
+        if (tag != null && !tag.isEmpty()) {
+            posts = postService.getPostsByTagName(tag, page, size);
+            model.addAttribute("tag", tag);
+        } else {
+            posts = postService.getPosts(page, size);
+        }
+
         model.addAttribute("posts", posts);
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);

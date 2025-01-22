@@ -100,6 +100,36 @@ public class PostDaoImpl implements PostDao {
         return jdbcTemplate.query(sql, postRowMapper, tagId);
     }
 
+    @Override
+    public List<Post> findPostsByTag(Long tagId, int page, int size) {
+        String sql = "SELECT p.* FROM posts p " +
+                "JOIN post_tags pt ON p.id = pt.post_id " +
+                "WHERE pt.tag_id = ? " +
+                "ORDER BY p.created_at DESC LIMIT ? OFFSET ?";
+        int offset = (page - 1) * size;
+
+        List<Post> posts = jdbcTemplate.query(sql, postRowMapper, tagId, size, offset);
+
+        for (Post post : posts) {
+            String tagSql = "SELECT t.id, t.name FROM tags t " +
+                    "JOIN post_tags pt ON t.id = pt.tag_id WHERE pt.post_id = ?";
+            List<Tag> tags = jdbcTemplate.query(tagSql, (rs, rowNum) -> {
+                Tag tag = new Tag();
+                tag.setId(rs.getLong("id"));
+                tag.setName(rs.getString("name"));
+                return tag;
+            }, post.getId());
+            post.setTags(tags);
+
+            String commentCountSql = "SELECT COUNT(*) FROM comments WHERE post_id = ?";
+            int commentCount = jdbcTemplate.queryForObject(commentCountSql, Integer.class, post.getId());
+            post.setCommentCount(commentCount);
+        }
+
+        return posts;
+    }
+
+
     private final RowMapper<Post> postRowMapper = (rs, rowNum) -> {
         Post post = new Post();
         post.setId(rs.getLong("id"));

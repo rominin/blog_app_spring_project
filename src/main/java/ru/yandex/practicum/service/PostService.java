@@ -6,6 +6,7 @@ import ru.yandex.practicum.dao.TagDao;
 import ru.yandex.practicum.model.Post;
 import ru.yandex.practicum.model.Tag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -55,5 +56,14 @@ public class PostService {
     public List<Post> getPostsByTag(Long tagId) {
         return postDao.findPostsByTag(tagId);
     }
+
+    public List<Post> getPostsByTagName(String tagName, int page, int size) {
+        Tag tag = tagDao.findByName(tagName);
+        if (tag == null) {
+            return new ArrayList<>();
+        }
+        return postDao.findPostsByTag(tag.getId(), page, size);
+    }
+
 
 }
