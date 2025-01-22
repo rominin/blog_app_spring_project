@@ -6,8 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.yandex.practicum.model.Post;
+import ru.yandex.practicum.model.Tag;
 import ru.yandex.practicum.service.PostService;
+import ru.yandex.practicum.service.TagService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -15,9 +18,11 @@ import java.util.List;
 public class FeedController {
 
     private final PostService postService;
+    private final TagService tagService;
 
-    public FeedController(PostService postService) {
+    public FeedController(PostService postService, TagService tagService) {
         this.postService = postService;
+        this.tagService = tagService;
     }
 
     @GetMapping
@@ -30,7 +35,13 @@ public class FeedController {
         List<Post> posts;
 
         if (tag != null && !tag.isEmpty()) {
-            posts = postService.getPostsByTagName(tag, page, size);
+            Tag existingTag = tagService.findTagByName(tag);
+            if (existingTag == null) {
+                posts = new ArrayList<>();
+                model.addAttribute("message", "No posts found for tag: " + tag);
+            } else {
+                posts = postService.getPostsByTagName(tag, page, size);
+            }
             model.addAttribute("tag", tag);
         } else {
             posts = postService.getPosts(page, size);

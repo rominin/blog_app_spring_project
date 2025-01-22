@@ -1,5 +1,6 @@
 package ru.yandex.practicum.dao;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -33,7 +34,16 @@ public class TagDaoImpl implements TagDao {
     @Override
     public Tag findByName(String name) {
         String sql = "SELECT * FROM tags WHERE name = ?";
-        return jdbcTemplate.queryForObject(sql, tagRowMapper, name);
+        try {
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+                Tag tag = new Tag();
+                tag.setId(rs.getLong("id"));
+                tag.setName(rs.getString("name"));
+                return tag;
+            }, name);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
