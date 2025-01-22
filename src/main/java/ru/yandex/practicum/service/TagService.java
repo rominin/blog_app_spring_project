@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class TagService {
 
-    private TagDao tagDao;
+    private final TagDao tagDao;
 
     public TagService(TagDao tagDao) {
         this.tagDao = tagDao;
@@ -17,6 +17,16 @@ public class TagService {
 
     public List<Tag> getAllTags() {
         return tagDao.findAll();
+    }
+
+    public Tag findTagByName(String name) {
+        return tagDao.findByName(name);
+    }
+
+    public void addTag(String name) {
+        if (tagDao.findByName(name) == null) {
+            tagDao.save(new Tag(name));
+        }
     }
 
     public List<Tag> getTagsByPostId(Long postId) {

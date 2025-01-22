@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class CommentService {
 
-    private CommentDao commentDao;
+    private final CommentDao commentDao;
 
     public CommentService(CommentDao commentDao) {
         this.commentDao = commentDao;
@@ -27,7 +27,7 @@ public class CommentService {
         Comment comment = commentDao.findById(id);
         if (comment != null) {
             comment.setText(text);
-            commentDao.save(comment);
+            commentDao.update(comment);
         }
     }
 

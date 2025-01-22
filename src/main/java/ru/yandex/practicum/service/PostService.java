@@ -2,7 +2,9 @@ package ru.yandex.practicum.service;
 
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.dao.PostDao;
+import ru.yandex.practicum.dao.TagDao;
 import ru.yandex.practicum.model.Post;
+import ru.yandex.practicum.model.Tag;
 
 import java.util.List;
 
@@ -10,9 +12,11 @@ import java.util.List;
 public class PostService {
 
     private final PostDao postDao;
+    private final TagDao tagDao;
 
-    public PostService(final PostDao postDao) {
+    public PostService(PostDao postDao, TagDao tagDao) {
         this.postDao = postDao;
+        this.tagDao = tagDao;
     }
 
     public List<Post> getPosts(int page, int size) {
@@ -20,15 +24,28 @@ public class PostService {
     }
 
     public Post getPostById(Long id) {
-        return postDao.findById(id);
+        Post post = postDao.findById(id);
+        post.setTags(tagDao.findTagsByPostId(id));
+        return post;
     }
 
-    public void addPost(Post post) {
+    public void addPost(Post post, List<String> tagNames) {
         postDao.save(post);
+        if (tagNames != null) {
+            for (String tagName : tagNames) {
+                Tag tag = tagDao.findByName(tagName);
+                if (tag == null) {
+                    tag = new Tag(tagName);
+                    tagDao.save(tag);
+                }
+                postDao.findById(post.getId());
+                tagDao.findTagsByPostId(tag.getId());
+            }
+        }
     }
 
     public void updatePost(Post post) {
-        postDao.save(post);
+        postDao.update(post);
     }
 
     public void deletePost(Long id) {
