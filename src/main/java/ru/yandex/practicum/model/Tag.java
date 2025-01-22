@@ -8,6 +8,12 @@ public class Tag {
     private String name;
     private List<Post> posts;
 
+    public Tag() {}
+
+    public Tag(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

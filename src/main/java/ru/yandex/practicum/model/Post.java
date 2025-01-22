@@ -1,6 +1,7 @@
 package ru.yandex.practicum.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
@@ -12,8 +13,18 @@ public class Post {
     private int likeCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<Comment> comments;
-    private List<Tag> tags;
+    private List<Comment> comments = new ArrayList<>();
+    private List<Tag> tags = new ArrayList<>();
+    private int commentCount;
+
+    public Post() {}
+
+    public Post(String title, String text, String imageUrl, int likeCount) {
+        this.title = title;
+        this.text = text;
+        this.imageUrl = imageUrl;
+        this.likeCount = likeCount;
+    }
 
     public Long getId() {
         return id;
@@ -85,5 +96,13 @@ public class Post {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 }
