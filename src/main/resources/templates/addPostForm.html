@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org">
+    <head>
+    <meta charset="UTF-8">
+    <title>Add New Post</title>
+</head>
+<body>
+<h1>Add New Post</h1>
+
+<form th:action="@{/post/new}" method="post">
+  <label for="title">Title:</label>
+  <input type="text" id="title" name="title" th:value="${post.title}" required />
+  <label for="imageUrl">Image URL:</label>
+  <input type="text" id="imageUrl" name="imageUrl" th:value="${post.imageUrl}" />
+  <label for="text">Text:</label>
+  <textarea id="text" name="text" required th:text="${post.text}"></textarea>
+  <label for="tags">Tags:</label>
+  <select id="tags" name="tags" multiple>
+    <option th:each="tag : ${tags}" th:value="${tag.name}" th:text="${tag.name}"></option>
+  </select>
+
+  <button type="submit">Add Post</button>
+</form>
+
+<a th:href="@{/feed}">Back to Feed</a>
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>

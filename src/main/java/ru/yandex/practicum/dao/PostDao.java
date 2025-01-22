@@ -7,9 +7,10 @@ import java.util.List;
 public interface PostDao {
     List<Post> findAll(int page, int size);
     Post findById(Long id);
-    void save(Post post);
+    Long save(Post post);
     void update(Post post);
     void delete(Long id);
     List<Post> findPostsByTag(Long tagId);
     List<Post> findPostsByTag(Long tagId, int page, int size);
+    void addTagToPost(Long postId, Long id);
 }

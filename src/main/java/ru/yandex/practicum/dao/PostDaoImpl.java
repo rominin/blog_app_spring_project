@@ -2,11 +2,14 @@ package ru.yandex.practicum.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.model.Comment;
 import ru.yandex.practicum.model.Post;
 import ru.yandex.practicum.model.Tag;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 
 @Repository
@@ -75,9 +78,18 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public void save(Post post) {
-        String sql = "INSERT INTO posts (title, text, image_url, like_count) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, post.getTitle(), post.getText(), post.getImageUrl(), post.getLikeCount());
+    public Long save(Post post) {
+        String sql = "INSERT INTO posts (title, text, image_url, like_count, created_at, updated_at) " +
+                "VALUES (?, ?, ?, 0, NOW(), NOW())";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"ID"});
+            ps.setString(1, post.getTitle());
+            ps.setString(2, post.getText());
+            ps.setString(3, post.getImageUrl());
+            return ps;
+        }, keyHolder);
+        return keyHolder.getKey().longValue();
     }
 
     @Override
@@ -127,6 +139,12 @@ public class PostDaoImpl implements PostDao {
         }
 
         return posts;
+    }
+
+    @Override
+    public void addTagToPost(Long postId, Long tagId) {
+        String sql = "INSERT INTO post_tags (post_id, tag_id) VALUES (?, ?)";
+        jdbcTemplate.update(sql, postId, tagId);
     }
 
 

@@ -31,17 +31,16 @@ public class PostService {
     }
 
     public void addPost(Post post, List<String> tagNames) {
-        postDao.save(post);
-        if (tagNames != null) {
-            for (String tagName : tagNames) {
-                Tag tag = tagDao.findByName(tagName);
-                if (tag == null) {
-                    tag = new Tag(tagName);
-                    tagDao.save(tag);
-                }
-                postDao.findById(post.getId());
-                tagDao.findTagsByPostId(tag.getId());
+        Long postId = postDao.save(post);
+
+        for (String tagName : tagNames) {
+            Tag tag = tagDao.findByName(tagName);
+            if (tag == null) {
+                tag = new Tag();
+                tag.setName(tagName);
+                tagDao.save(tag);
             }
+            postDao.addTagToPost(postId, tag.getId());
         }
     }
 
