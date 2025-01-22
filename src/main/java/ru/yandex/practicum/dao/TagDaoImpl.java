@@ -20,8 +20,26 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public List<Tag> findAll() {
-        String sql = "SELECT * FROM tags ORDER BY name ASC";
-        return jdbcTemplate.query(sql, new TagRowMapper());
+        String sql = "SELECT * FROM tags ORDER BY name";
+        return jdbcTemplate.query(sql, tagRowMapper);
+    }
+
+    @Override
+    public Tag findById(Long id) {
+        String sql = "SELECT * FROM tags WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, tagRowMapper, id);
+    }
+
+    @Override
+    public Tag findByName(String name) {
+        String sql = "SELECT * FROM tags WHERE name = ?";
+        return jdbcTemplate.queryForObject(sql, tagRowMapper, name);
+    }
+
+    @Override
+    public void save(Tag tag) {
+        String sql = "INSERT INTO tags (name) VALUES (?)";
+        jdbcTemplate.update(sql, tag.getName());
     }
 
     @Override
@@ -29,16 +47,13 @@ public class TagDaoImpl implements TagDao {
         String sql = "SELECT t.* FROM tags t " +
                 "JOIN post_tags pt ON t.id = pt.tag_id " +
                 "WHERE pt.post_id = ?";
-        return jdbcTemplate.query(sql, new TagRowMapper(), postId);
+        return jdbcTemplate.query(sql, tagRowMapper, postId);
     }
 
-    private static class TagRowMapper implements RowMapper<Tag> {
-        @Override
-        public Tag mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Tag tag = new Tag();
-            tag.setId(rs.getLong("id"));
-            tag.setName(rs.getString("name"));
-            return tag;
-        }
-    }
+    private final RowMapper<Tag> tagRowMapper = (rs, rowNum) -> {
+        Tag tag = new Tag();
+        tag.setId(rs.getLong("id"));
+        tag.setName(rs.getString("name"));
+        return tag;
+    };
 }
