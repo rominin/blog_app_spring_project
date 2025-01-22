@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Feed will be here</title>
+    <title>Post Feed</title>
+    <link rel="stylesheet" href="/resources/styles.css">
 </head>
 <body>
-<h1>Feed will be here</h1>
+<header>
+    <h1>Post Feed</h1>
+    <a href="/post/new">Add New Post</a>
+</header>
+
+<main>
+    <section>
+        <ul>
+            <li th:each="post : ${posts}">
+                <h2><a th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">Post Title</a></h2>
+                <img th:src="${post.imageUrl}" alt="Post Image" width="200">
+                <p th:text="${#strings.abbreviate(post.text, 100)}">Post Preview</p>
+                <p>Comments: <span th:text="${post.commentCount}">0</span></p>
+                <p>Likes: <span th:text="${post.likeCount}">0</span></p>
+                <div>
+            <span th:each="tag : ${post.tags}">
+                <a th:href="@{/feed/tag/{tagId}(tagId=${tag.id})}" th:text="${tag.name}">Tag</a>
+            </span>
+                </div>
+            </li>
+        </ul>
+
+    </section>
+
+    <nav>
+        <a th:if="${currentPage > 1}" th:href="@{/feed(size=${pageSize}, page=${currentPage - 1})}">Previous</a>
+        <span th:text="'Page ' + ${currentPage}">Page 1</span>
+        <a th:if="${posts.size() == pageSize}" th:href="@{/feed(size=${pageSize}, page=${currentPage + 1})}">Next</a>
+    </nav>
+</main>
 </body>
 </html>
