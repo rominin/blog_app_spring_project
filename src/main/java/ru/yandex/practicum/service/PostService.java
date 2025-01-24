@@ -45,8 +45,20 @@ public class PostService {
         }
     }
 
-    public void updatePost(Post post) {
+    public void updatePost(Post post, List<String> tagNames) {
         postDao.update(post);
+
+        postDao.clearTags(post.getId());
+        for (String tagName : tagNames) {
+            Tag tag = tagDao.findByName(tagName);
+            if (tag == null) {
+                tag = new Tag();
+                tag.setName(tagName);
+                Long tagId = tagDao.save(tag);
+                tag.setId(tagId);
+            }
+            postDao.addTagToPost(post.getId(), tag.getId());
+        }
     }
 
     public void deletePost(Long id) {

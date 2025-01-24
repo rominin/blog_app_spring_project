@@ -100,16 +100,14 @@ public class PostDaoImpl implements PostDao {
 
     @Override
     public void delete(Long id) {
-        String sql = "DELETE FROM posts WHERE id = ?";
-        jdbcTemplate.update(sql, id);
-    }
+        String deleteTagsSql = "DELETE FROM post_tags WHERE post_id = ?";
+        jdbcTemplate.update(deleteTagsSql, id);
 
-    @Override
-    public List<Post> findPostsByTag(Long tagId) {
-        String sql = "SELECT p.* FROM posts p " +
-                "JOIN post_tags pt ON p.id = pt.post_id " +
-                "WHERE pt.tag_id = ? ORDER BY p.created_at DESC";
-        return jdbcTemplate.query(sql, postRowMapper, tagId);
+        String deleteCommentsSql = "DELETE FROM comments WHERE post_id = ?";
+        jdbcTemplate.update(deleteCommentsSql, id);
+
+        String deletePostSql = "DELETE FROM posts WHERE id = ?";
+        jdbcTemplate.update(deletePostSql, id);
     }
 
     @Override
@@ -145,6 +143,12 @@ public class PostDaoImpl implements PostDao {
     public void addTagToPost(Long postId, Long tagId) {
         String sql = "INSERT INTO post_tags (post_id, tag_id) VALUES (?, ?)";
         jdbcTemplate.update(sql, postId, tagId);
+    }
+
+    @Override
+    public void clearTags(Long postId) {
+        String sql = "DELETE FROM post_tags WHERE post_id = ?";
+        jdbcTemplate.update(sql, postId);
     }
 
 

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.model.Post;
+import ru.yandex.practicum.model.Tag;
 import ru.yandex.practicum.service.CommentService;
 import ru.yandex.practicum.service.PostService;
 import ru.yandex.practicum.service.TagService;
@@ -42,6 +43,37 @@ public class PostController {
 
         postService.addPost(post, tagNames);
         return "redirect:/feed";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deletePost(@PathVariable (name = "id") Long id) {
+        postService.deletePost(id);
+        return "redirect:/feed";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String showEditPostForm(@PathVariable (name = "id") Long id, Model model) {
+        Post post = postService.getPostById(id);
+        String tagNames = post.getTags().stream()
+                .map(Tag::getName)
+                .filter(name -> name != null && !name.isEmpty())
+                .collect(Collectors.joining(", "));
+
+        model.addAttribute("post", post);
+        model.addAttribute("tags", tagNames);
+        return "editPostForm";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String editPost(@PathVariable (name = "id") Long id, @ModelAttribute Post post, @RequestParam("tags") String tags) {
+        List<String> tagNames = Arrays.stream(tags.split(","))
+                .map(String::trim)
+                .filter(name -> !name.isEmpty())
+                .collect(Collectors.toList());
+
+        post.setId(id);
+        postService.updatePost(post, tagNames);
+        return "redirect:/post/" + id;
     }
 
     @PostMapping("/{id}/comment")
