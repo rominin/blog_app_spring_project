@@ -33,12 +33,7 @@ public class PostDaoImpl implements PostDao {
 
             String tagSql = "SELECT t.id, t.name FROM tags t " +
                     "JOIN post_tags pt ON t.id = pt.tag_id WHERE pt.post_id = ?";
-            List<Tag> tags = jdbcTemplate.query(tagSql, (rs, rowNum) -> {
-                Tag tag = new Tag();
-                tag.setId(rs.getLong("id"));
-                tag.setName(rs.getString("name"));
-                return tag;
-            }, post.getId());
+            List<Tag> tags = jdbcTemplate.query(tagSql, tagRowMapper, post.getId());
             post.setTags(tags);
         }
 
@@ -66,12 +61,7 @@ public class PostDaoImpl implements PostDao {
 
         String tagSql = "SELECT t.id, t.name FROM tags t " +
                 "JOIN post_tags pt ON t.id = pt.tag_id WHERE pt.post_id = ?";
-        List<Tag> tags = jdbcTemplate.query(tagSql, (rs, rowNum) -> {
-            Tag tag = new Tag();
-            tag.setId(rs.getLong("id"));
-            tag.setName(rs.getString("name"));
-            return tag;
-        }, id);
+        List<Tag> tags = jdbcTemplate.query(tagSql, tagRowMapper, id);
         post.setTags(tags);
 
         return post;
@@ -123,12 +113,7 @@ public class PostDaoImpl implements PostDao {
         for (Post post : posts) {
             String tagSql = "SELECT t.id, t.name FROM tags t " +
                     "JOIN post_tags pt ON t.id = pt.tag_id WHERE pt.post_id = ?";
-            List<Tag> tags = jdbcTemplate.query(tagSql, (rs, rowNum) -> {
-                Tag tag = new Tag();
-                tag.setId(rs.getLong("id"));
-                tag.setName(rs.getString("name"));
-                return tag;
-            }, post.getId());
+            List<Tag> tags = jdbcTemplate.query(tagSql, tagRowMapper, post.getId());
             post.setTags(tags);
 
             String commentCountSql = "SELECT COUNT(*) FROM comments WHERE post_id = ?";
@@ -168,5 +153,12 @@ public class PostDaoImpl implements PostDao {
         post.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         post.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
         return post;
+    };
+
+    private final RowMapper<Tag> tagRowMapper = (rs, rowNum) -> {
+        Tag tag = new Tag();
+        tag.setId(rs.getLong("id"));
+        tag.setName(rs.getString("name"));
+        return tag;
     };
 }
