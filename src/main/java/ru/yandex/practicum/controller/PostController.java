@@ -45,7 +45,6 @@ public class PostController {
         return "redirect:/feed";
     }
 
-    // TODO текст поста должен разбиваться на абзацы
     @GetMapping("/{id}")
     public String getPostById(@PathVariable (name = "id") Long id, Model model) {
         Post post = postService.getPostById(id);

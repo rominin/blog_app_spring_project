@@ -7,7 +7,7 @@
 <body>
 <h1 th:text="${post.title}">Title</h1>
 <img th:src="${post.imageUrl}" alt="Post Image" width="300">
-<p th:text="${post.text}"></p>
+<p data-th-utext="${#strings.replace(#strings.escapeXml(post.text),'&#10;','&lt;br&gt;')}"></p>
 <div>
     <span th:each="tag : ${post.tags}">
         <a th:href="@{/feed(tag=${tag.name})}" th:text="${tag.name}">Tag</a>
