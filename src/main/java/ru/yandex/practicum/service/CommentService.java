@@ -4,8 +4,6 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.dao.CommentDao;
 import ru.yandex.practicum.model.Comment;
 
-import java.util.List;
-
 @Service
 public class CommentService {
 
@@ -15,11 +13,10 @@ public class CommentService {
         this.commentDao = commentDao;
     }
 
-    public List<Comment> getCommentsByPostId(Long postId) {
-        return commentDao.findByPostId(postId);
-    }
-
-    public void addComment(Comment comment) {
+    public void addComment(Long postId, String text) {
+        Comment comment = new Comment();
+        comment.setPostId(postId);
+        comment.setText(text);
         commentDao.save(comment);
     }
 

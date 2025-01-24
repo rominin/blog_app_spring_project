@@ -24,13 +24,13 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public void save(Comment comment) {
-        String sql = "INSERT INTO comments (post_id, text) VALUES (?, ?)";
+        String sql = "INSERT INTO comments (post_id, text, created_at, updated_at) VALUES (?, ?, NOW(), NOW())";
         jdbcTemplate.update(sql, comment.getPostId(), comment.getText());
     }
 
     @Override
     public void update(Comment comment) {
-        String sql = "UPDATE comments SET text = ? WHERE id = ?";
+        String sql = "UPDATE comments SET text = ?, updated_at = NOW() WHERE id = ?";
         jdbcTemplate.update(sql, comment.getText(), comment.getId());
     }
 
