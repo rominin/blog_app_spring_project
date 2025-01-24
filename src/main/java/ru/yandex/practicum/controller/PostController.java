@@ -45,6 +45,21 @@ public class PostController {
         return "redirect:/feed";
     }
 
+    // TODO текст поста должен разбиваться на абзацы
+    @GetMapping("/{id}")
+    public String getPostById(@PathVariable (name = "id") Long id, Model model) {
+        Post post = postService.getPostById(id);
+        model.addAttribute("post", post);
+        model.addAttribute("comments", post.getComments());
+        return "post";
+    }
+
+    @PostMapping("/{id}/like")
+    public String likePost(@PathVariable (name = "id") Long id) {
+        postService.incrementLikeCount(id);
+        return "redirect:/post/" + id;
+    }
+
     @PostMapping("/{id}/delete")
     public String deletePost(@PathVariable (name = "id") Long id) {
         postService.deletePost(id);

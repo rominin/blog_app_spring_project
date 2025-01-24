@@ -50,7 +50,7 @@ public class PostDaoImpl implements PostDao {
         String sql = "SELECT * FROM posts WHERE id = ?";
         Post post = jdbcTemplate.queryForObject(sql, postRowMapper, id);
 
-        String commentSql = "SELECT * FROM comments WHERE post_id = ? ORDER BY created_at";
+        String commentSql = "SELECT * FROM comments WHERE post_id = ? ORDER BY created_at DESC";
         List<Comment> comments = jdbcTemplate.query(commentSql, (rs, rowNum) -> {
             Comment comment = new Comment();
             comment.setId(rs.getLong("id"));
@@ -143,6 +143,12 @@ public class PostDaoImpl implements PostDao {
     public void addTagToPost(Long postId, Long tagId) {
         String sql = "INSERT INTO post_tags (post_id, tag_id) VALUES (?, ?)";
         jdbcTemplate.update(sql, postId, tagId);
+    }
+
+    @Override
+    public void incrementLikeCount(Long id) {
+        String sql = "UPDATE posts SET like_count = like_count + 1 WHERE id = ?";
+        jdbcTemplate.update(sql, id);
     }
 
     @Override

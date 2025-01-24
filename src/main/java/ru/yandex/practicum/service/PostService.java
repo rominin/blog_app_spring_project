@@ -73,5 +73,8 @@ public class PostService {
         return postDao.findPostsByTag(tag.getId(), page, size);
     }
 
+    public void incrementLikeCount(Long id) {
+        postDao.incrementLikeCount(id);
+    }
 
 }

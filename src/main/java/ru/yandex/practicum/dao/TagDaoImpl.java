@@ -30,12 +30,7 @@ public class TagDaoImpl implements TagDao {
     public Tag findByName(String name) {
         String sql = "SELECT * FROM tags WHERE name = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
-                Tag tag = new Tag();
-                tag.setId(rs.getLong("id"));
-                tag.setName(rs.getString("name"));
-                return tag;
-            }, name);
+            return jdbcTemplate.queryForObject(sql, tagRowMapper, name);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
