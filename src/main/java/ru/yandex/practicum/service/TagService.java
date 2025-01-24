@@ -23,14 +23,4 @@ public class TagService {
         return tagDao.findByName(name);
     }
 
-    public void addTag(String name) {
-        if (tagDao.findByName(name) == null) {
-            tagDao.save(new Tag(name));
-        }
-    }
-
-    public List<Tag> getTagsByPostId(Long postId) {
-        return tagDao.findTagsByPostId(postId);
-    }
-
 }

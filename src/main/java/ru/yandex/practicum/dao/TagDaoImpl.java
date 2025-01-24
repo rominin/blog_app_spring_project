@@ -27,12 +27,6 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public Tag findById(Long id) {
-        String sql = "SELECT * FROM tags WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, tagRowMapper, id);
-    }
-
-    @Override
     public Tag findByName(String name) {
         String sql = "SELECT * FROM tags WHERE name = ?";
         try {

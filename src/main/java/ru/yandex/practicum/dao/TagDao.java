@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface TagDao {
     List<Tag> findAll();
-    Tag findById(Long id);
     Tag findByName(String name);
     Long save(Tag tag);
     List<Tag> findTagsByPostId(Long postId);

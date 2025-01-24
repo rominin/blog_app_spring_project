@@ -5,8 +5,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.model.Comment;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -16,12 +14,6 @@ public class CommentDaoImpl implements CommentDao {
 
     public CommentDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-    }
-
-    @Override
-    public List<Comment> findByPostId(Long postId) {
-        String sql = "SELECT * FROM comments WHERE post_id = ? ORDER BY created_at DESC";
-        return jdbcTemplate.query(sql, commentRowMapper, postId);
     }
 
     @Override

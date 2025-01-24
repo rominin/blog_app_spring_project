@@ -53,10 +53,6 @@ public class PostService {
         postDao.delete(id);
     }
 
-    public List<Post> getPostsByTag(Long tagId) {
-        return postDao.findPostsByTag(tagId);
-    }
-
     public List<Post> getPostsByTagName(String tagName, int page, int size) {
         Tag tag = tagDao.findByName(tagName);
         if (tag == null) {

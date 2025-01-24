@@ -10,13 +10,6 @@ public class Comment {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Comment() {}
-
-    public Comment(Long postId, String text) {
-        this.postId = postId;
-        this.text = text;
-    }
-
     public Long getId() {
         return id;
     }

@@ -10,7 +10,6 @@ public interface PostDao {
     Long save(Post post);
     void update(Post post);
     void delete(Long id);
-    List<Post> findPostsByTag(Long tagId);
     List<Post> findPostsByTag(Long tagId, int page, int size);
     void addTagToPost(Long postId, Long id);
 }
