@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <title>Post Feed</title>
     <link rel="stylesheet" href="/resources/styles.css">
+    <style>
+        .post-preview {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -23,7 +33,7 @@
             <li th:each="post : ${posts}">
                 <h2><a th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">Post Title</a></h2>
                 <img th:src="${post.imageUrl}" alt="Post Image" width="200">
-                <p th:text="${#strings.abbreviate(post.text, 100)}">Post Preview</p>
+                <p class="post-preview" data-th-utext="${#strings.replace(#strings.escapeXml(post.text), '&#10;', '&lt;br&gt;')}"></p>
                 <p>Comments: <span th:text="${post.commentCount}">0</span></p>
                 <p>Likes: <span th:text="${post.likeCount}">0</span></p>
                 <div>
