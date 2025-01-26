@@ -32,10 +32,10 @@ public class PostServiceIntegrationTest {
 
     @Test
     void testGetPostById_success() {
-        Post post = postService.getPostById(2L);
+        Post post = postService.getPostById(8L);
 
         assertThat(post).isNotNull();
-        assertThat(post.getTitle()).isEqualTo("Updated Title");
+        assertThat(post.getTitle()).isEqualTo("Рандомный заголовок");
     }
 
     @Test
@@ -64,11 +64,11 @@ public class PostServiceIntegrationTest {
 
     @Test
     void testUpdatePost_success() {
-        Post post = postService.getPostById(2L);
+        Post post = postService.getPostById(5L);
         post.setTitle("Updated Title");
         post.setText("Updated Text");
         postService.updatePost(post, List.of("UpdatedTag1", "UpdatedTag2"));
-        Post updatedPost = postService.getPostById(2L);
+        Post updatedPost = postService.getPostById(5L);
 
         assertThat(updatedPost.getTitle()).isEqualTo("Updated Title");
         assertThat(updatedPost.getText()).isEqualTo("Updated Text");

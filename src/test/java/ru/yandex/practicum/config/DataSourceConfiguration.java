@@ -1,6 +1,7 @@
 package ru.yandex.practicum.config;
 
 import org.h2.Driver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,9 @@ import javax.sql.DataSource;
 
 @Configuration
 public class DataSourceConfiguration {
+
+    @Autowired
+    private String schema;
 
     @Bean
     public DataSource dataSource(
@@ -27,7 +31,7 @@ public class DataSourceConfiguration {
         dataSource.setPassword(password);
 
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-        populator.addScript(new ClassPathResource("schema-test.sql"));
+        populator.addScript(new ClassPathResource(schema));
         populator.execute(dataSource);
 
         return dataSource;

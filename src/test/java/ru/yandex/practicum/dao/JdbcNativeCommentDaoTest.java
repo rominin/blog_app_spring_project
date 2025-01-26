@@ -8,15 +8,15 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import ru.yandex.practicum.config.DataSourceConfiguration;
-import ru.yandex.practicum.config.IntegrationTestsConfiguration;
+import ru.yandex.practicum.config.DaoIntegrationTestsConfiguration;
 import ru.yandex.practicum.model.Comment;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringJUnitConfig(classes = {DataSourceConfiguration.class, IntegrationTestsConfiguration.class})
-@TestPropertySource(locations = "classpath:application-test.properties")
+@SpringJUnitConfig(classes = {DataSourceConfiguration.class, DaoIntegrationTestsConfiguration.class})
+@TestPropertySource(locations = "classpath:application-dao-test.properties")
 public class JdbcNativeCommentDaoTest {
 
     @Autowired

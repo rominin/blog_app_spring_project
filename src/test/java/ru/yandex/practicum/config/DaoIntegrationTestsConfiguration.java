@@ -10,11 +10,11 @@ import org.springframework.context.annotation.Import;
 @Import({ru.yandex.practicum.dao.CommentDaoImpl.class,
         ru.yandex.practicum.dao.PostDaoImpl.class,
         ru.yandex.practicum.dao.TagDaoImpl.class})
-public class IntegrationTestsConfiguration {
+public class DaoIntegrationTestsConfiguration {
 
     @Bean
     public String schema() {
-        return "schema-test.sql";
+        return "schema-dao-test.sql";
     }
 
 }
