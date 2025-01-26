@@ -1,8 +1,10 @@
 package ru.yandex.practicum.service;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import ru.yandex.practicum.config.DataSourceConfiguration;
@@ -21,6 +23,14 @@ public class PostServiceIntegrationTest {
 
     @Autowired
     private PostService postService;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @AfterEach
+    public void cleanDb() {
+        jdbcTemplate.execute("DELETE FROM tags WHERE name = 'NewTag2' OR name = 'NewTag1' " +
+                "OR name = 'UpdatedTag2' OR name = 'UpdatedTag1'");
+    }
 
     @Test
     void testGetPosts_success() {
