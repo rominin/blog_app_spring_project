@@ -1,4 +1,4 @@
-package ru.yandex.practicum.service;
+package ru.yandex.practicum.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import ru.yandex.practicum.config.DataSourceConfiguration;
 import ru.yandex.practicum.config.IntegrationTestsConfiguration;
-import ru.yandex.practicum.dao.CommentDao;
 import ru.yandex.practicum.model.Comment;
 
 import java.util.List;

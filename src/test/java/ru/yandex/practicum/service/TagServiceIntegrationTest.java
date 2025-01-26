@@ -23,15 +23,15 @@ public class TagServiceIntegrationTest {
     void testGetAllTags_success() {
         List<Tag> tags = tagService.getAllTags();
         assertThat(tags).isNotNull();
-        assertThat(tags).hasSize(7);
-        assertThat(tags).extracting(Tag::getName).contains("Java", "Concurrent", "Serialization", "Spring", "Security", "Cloud", "Yandex");
+        assertThat(tags).hasSize(3);
+        assertThat(tags).extracting(Tag::getName).contains("Tag1", "Tag2", "Tag3");
     }
 
     @Test
     void testFindTagByName_shouldReturnTagWhenExists() {
-        Tag tag = tagService.findTagByName("Java");
+        Tag tag = tagService.findTagByName("Tag1");
         assertThat(tag).isNotNull();
-        assertThat(tag.getName()).isEqualTo("Java");
+        assertThat(tag.getName()).isEqualTo("Tag1");
     }
 
     @Test
