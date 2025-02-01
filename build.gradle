@@ -1,45 +1,7 @@
-// originally created by spring initializer
-
-
-//plugins {
-//	id 'java'
-//	id 'org.springframework.boot' version '3.4.2'
-//	id 'io.spring.dependency-management' version '1.1.7'
-//}
-//
-//group = 'ru.practicum.java'
-//version = '0.0.1-SNAPSHOT'
-//
-//java {
-//	toolchain {
-//		languageVersion = JavaLanguageVersion.of(21)
-//	}
-//}
-//
-//repositories {
-//	mavenCentral()
-//}
-//
-//dependencies {
-//	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-//	implementation 'org.springframework.boot:spring-boot-starter-web'
-//	runtimeOnly 'com.h2database:h2'
-//	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-//}
-//
-//tasks.named('test') {
-//	useJUnitPlatform()
-//}
-
-
-
-
-// version instead of maven
-
 plugins {
 	id 'java'
-	id 'war'
+	id 'org.springframework.boot' version '3.4.2'
+	id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'ru.practicum.java'
@@ -55,25 +17,24 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework:spring-webmvc:6.2.1'
-	providedCompile 'jakarta.servlet:jakarta.servlet-api:6.1.0'
-	implementation 'org.thymeleaf:thymeleaf:3.1.2.RELEASE'
-	implementation 'org.thymeleaf:thymeleaf-spring6:3.1.2.RELEASE'
-	implementation 'com.h2database:h2:2.2.224'
-	implementation 'org.springframework.data:spring-data-jdbc:3.4.1'
-	testImplementation 'org.junit.jupiter:junit-jupiter:5.11.2'
-	testImplementation 'org.springframework:spring-test:6.2.1'
-	testImplementation 'org.mockito:mockito-core:5.14.2'
-	testImplementation 'org.mockito:mockito-junit-jupiter:5.14.2'
-	testImplementation 'org.assertj:assertj-core:3.26.3'
-	testImplementation 'org.hamcrest:hamcrest:3.0'
-	testImplementation 'com.jayway.jsonpath:json-path:2.8.0'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'com.h2database:h2'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.junit.jupiter:junit-jupiter'
+	testImplementation 'org.mockito:mockito-core'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
 
-war {
-	archiveFileName = "blog_app_spring_boot_project.war"
+bootJar {
+	archiveFileName = 'blog_app_spring_boot_project.jar'
+}
+
+jar {
+	enabled = false
 }
