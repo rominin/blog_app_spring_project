@@ -2,18 +2,14 @@ package ru.yandex.practicum.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import ru.yandex.practicum.config.DataSourceConfiguration;
-import ru.yandex.practicum.config.IntegrationTestsConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.model.Tag;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringJUnitConfig(classes = {DataSourceConfiguration.class, IntegrationTestsConfiguration.class})
-@TestPropertySource(locations = "classpath:application-test.properties")
+@SpringBootTest
 public class TagServiceIntegrationTest {
 
     @Autowired
@@ -41,4 +37,3 @@ public class TagServiceIntegrationTest {
     }
 
 }
-

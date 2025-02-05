@@ -3,12 +3,9 @@ package ru.yandex.practicum.service;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import ru.yandex.practicum.config.DataSourceConfiguration;
-import ru.yandex.practicum.config.IntegrationTestsConfiguration;
 import ru.yandex.practicum.model.Post;
 import ru.yandex.practicum.model.Tag;
 
@@ -17,12 +14,12 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringJUnitConfig(classes = {DataSourceConfiguration.class, IntegrationTestsConfiguration.class})
-@TestPropertySource(locations = "classpath:application-test.properties")
+@SpringBootTest
 public class PostServiceIntegrationTest {
 
     @Autowired
     private PostService postService;
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
