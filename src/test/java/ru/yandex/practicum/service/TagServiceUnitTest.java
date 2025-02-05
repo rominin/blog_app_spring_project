@@ -1,12 +1,9 @@
 package ru.yandex.practicum.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.yandex.practicum.config.UnitTestsConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import ru.yandex.practicum.dao.TagDao;
 import ru.yandex.practicum.model.Tag;
 
@@ -14,22 +11,18 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = UnitTestsConfiguration.class)
+@SpringBootTest(classes = TagService.class)
 public class TagServiceUnitTest {
 
-    @Autowired
+    @MockitoBean
     private TagDao tagDao;
 
     @Autowired
     private TagService tagService;
-
-    @BeforeEach
-    void resetMocks() {
-        reset(tagDao);
-    }
 
     @Test
     void testGetAllTags_success() {

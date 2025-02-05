@@ -1,12 +1,9 @@
 package ru.yandex.practicum.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.yandex.practicum.config.UnitTestsConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import ru.yandex.practicum.dao.PostDao;
 import ru.yandex.practicum.dao.TagDao;
 import ru.yandex.practicum.model.Post;
@@ -16,25 +13,24 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = UnitTestsConfiguration.class)
+@SpringBootTest(classes = PostService.class)
 public class PostServiceUnitTest {
 
-    @Autowired
+    @MockitoBean
     private PostDao postDao;
 
-    @Autowired
+    @MockitoBean
     private TagDao tagDao;
 
     @Autowired
     private PostService postService;
-
-    @BeforeEach
-    void resetMocks() {
-        reset(postDao, tagDao);
-    }
 
     @Test
     void testGetPosts_success() {
@@ -85,7 +81,6 @@ public class PostServiceUnitTest {
 
     @Test
     void testUpdatePost_success() {
-        // Arrange
         Post post = new Post("Updated Title", "url", "Updated Text", 0);
         List<String> tagNames = List.of("Tag1", "Tag2");
 
@@ -131,6 +126,5 @@ public class PostServiceUnitTest {
         postService.incrementLikeCount(postId);
         verify(postDao, times(1)).incrementLikeCount(postId);
     }
-
 
 }
