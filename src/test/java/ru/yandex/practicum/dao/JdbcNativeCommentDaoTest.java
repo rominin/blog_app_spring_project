@@ -3,20 +3,18 @@ package ru.yandex.practicum.dao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import ru.yandex.practicum.config.DataSourceConfiguration;
-import ru.yandex.practicum.config.DaoIntegrationTestsConfiguration;
 import ru.yandex.practicum.model.Comment;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringJUnitConfig(classes = {DataSourceConfiguration.class, DaoIntegrationTestsConfiguration.class})
-@TestPropertySource(locations = "classpath:application-dao-test.properties")
+@SpringBootTest
+@TestPropertySource("classpath:application-test.properties")
 public class JdbcNativeCommentDaoTest {
 
     @Autowired
@@ -90,6 +88,5 @@ public class JdbcNativeCommentDaoTest {
         c.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
         return c;
     };
-
 
 }
